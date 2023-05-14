@@ -28,6 +28,6 @@ $
 ```
 
 ### Contact Info:
-#### Git: ChristianCampos-55
+#### Git: KuukuDev
 
-#### Git: danielj32
+#### Git: Borngod
