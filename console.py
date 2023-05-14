@@ -21,11 +21,11 @@ class HBNBCommand(cmd.Cmd):
                'Place': Place, 'Amenity': Amenity, 'Review': Review,
                'State': State}
 
-    def quit(self, arg):
+    def do_quit(self, arg):
         """ Exit method for quit typing """
         exit()
 
-    def EOF(self, arg):
+    def do_EOF(self, arg):
         """ Exit method for EOF """
         print('')
         exit()
@@ -34,7 +34,7 @@ class HBNBCommand(cmd.Cmd):
         """ Method to pass when emptyline entered """
         pass
 
-    def create(self, arg):
+    def do_create(self, arg):
         """ Create a new instance """
         if len(arg) == 0:
             print('** class name missing **')
@@ -50,7 +50,7 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     print("** class doesn't exist **")
 
-    def show(self, arg):
+    def do_show(self, arg):
         """ Method to print instance """
         if len(arg) == 0:
             print('** class name missing **')
@@ -68,7 +68,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             print('** instance id missing **')
 
-    def destroy(self, arg):
+    def do_destroy(self, arg):
         """ Method to delete instance with class and id """
         if len(arg) == 0:
             print("** class name missing **")
@@ -91,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
                 print('** no instance found **')
                 return
 
-    def all(self, arg):
+    def do_all(self, arg):
         """ Method to print all instances """
         if len(arg) == 0:
             print([str(a) for a in storage.all().values()])
@@ -100,7 +100,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             print([str(a) for b, a in storage.all().items() if arg in b])
 
-    def update(self, arg):
+    def do_update(self, arg):
         """ Method to update JSON file"""
         arg = arg.split()
         if len(arg) == 0:
