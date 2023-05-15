@@ -1,16 +1,29 @@
 #!/usr/bin/python3
-""" testing Amenity """
+
+"""
+Suite to test amenity in modules.amenity
+"""
 import unittest
-import pep8
+
+from models.base_model import BaseModel
 from models.amenity import Amenity
 
-class Amenity_testing(unittest.TestCase):
-    """ check BaseModel """
 
-    def testpep8(self):
-        """ testing codestyle """
-        pepstylecode = pep8.StyleGuide(quiet=True)
-        path_user = 'models/amenity.py'
-        result = pepstylecode.check_files([path_user])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+class TestAmenity(unittest.Test6Case):
+    """
+    TestCase for amenity
+    """
+    def initEnv(self):
+        self.amenity = Amenity()
+
+    def test_class_attribute(self):
+        """
+        Test if amenity has attribute name
+        """
+        self.assertTrue(hasattr(self.amenity, "name"))
+
+    def test_if_amenity_is_a_basemodel_item(self):
+        """
+        Testy if Amenity is asubclass of baseModel
+        """
+        self.assertTrue(issubclass(type(self.amenity), BaseModel))

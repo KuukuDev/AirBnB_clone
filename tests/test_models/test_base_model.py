@@ -1,109 +1,74 @@
 #!/usr/bin/python3
-""" testing files """
+
+"""
+Module with test suite for class BaseModel
+"""
+
 import unittest
-import inspect
-import pep8
-from models.base_model import BaseModel
 from datetime import datetime
+import os
+import models
+from models.base_model import BaseModel
 
 
-class BaseModel_testing(unittest.TestCase):
-    """ check BaseModel """
+class TestBaseModel(unittest.TestCase):
+    """
+    TestSuite for BaseModel
+    """
+    def test_if_id_exists(self):
+        """
+        Case to test if id exists upon initialization
+        """
+        i = BaseModel()
+        self.assertTrue(hasattr(i, "id"))
 
-    def testpep8(self):
-        """ testing codestyle """
-        pepstylecode = pep8.StyleGuide(quiet=True)
-        rest = pepstylecode.check_files(['models/base_model.py',
-                                         'models/__init__.py',
-                                         'models/engine/file_storage.py'])
-        self.assertEqual(rest.total_errors, 0,
-                         "Found code style errors (and warnings).")
+    def test_unique_id_generated(self):
+        """
+        Test if a unique id is called each time
+        """
+        i_a = BaseModel()
+        i_b = BaseModel()
+        self.assertNotEqual(i_a.id, i_b.id)
+
+    def test_str_print_format(self):
+        """
+        Test for the rirhst object representation
+        """
+        i = BaseModel()
+        self.assertEqual(str(i),
+                         "[BaseModel] ({}) {}".format(i.id, i.__dict__))
+
+    def test_created_at_is_format(self):
+        """
+        Test if the created_at attribute is datetime format
+        """
+        i = BaseModel()
+        self.assertTrue(type(i.created_at) is datetime)
+
+    def test_updated_at_is_format(self):
+        """
+        Test if the created_at attribute is datetime format
+        """
+        i = BaseModel()
+        self.assertTrue(type(i.updated_at) is datetime)
+
+    def test_initial_equality_of_times(self):
+        """
+        Test if 'created_at' and 'updated_at' are equal
+        """
+        i = BaseModel()
+        self.assertEqual(i.created_at, i.updated_at)
+
+    def test_if_save_method_updates_time_attr(self):
+        """
+        Test functionality of the save method
+        """
+        i = BaseModel()
+        sleep(0.05)
+        time_update = i.updated_at
+        i.save()
+        self.assertLess(i.time_update, i.updated_at)
 
 
-class test_for_base_model(unittest.TestCase):
-    """ Class test for BaseModel """
-    my_model = BaseModel()
-
-    def TearDown(self):
-        """ delete json file """
-        del self.test
-
-    def SetUp(self):
-        """ Create instance """
-        self.test = BaseModel()
-
-    def test_attr_none(self):
-        """None attribute."""
-        object_test = BaseModel(None)
-        self.assertTrue(hasattr(object_test, "id"))
-        self.assertTrue(hasattr(object_test, "created_at"))
-        self.assertTrue(hasattr(object_test, "updated_at"))
-
-    def test_kwargs_constructor_2(self):
-        """ check id with data """
-        dictonary = {'score': 100}
-
-        object_test = BaseModel(**dictonary)
-        self.assertTrue(hasattr(object_test, 'id'))
-        self.assertTrue(hasattr(object_test, 'created_at'))
-        self.assertTrue(hasattr(object_test, 'updated_at'))
-        self.assertTrue(hasattr(object_test, 'score'))
-
-    def test_str(self):
-        """ Test string """
-        dictonary = {'id': 'cc9909cf-a909-9b90-9999-999fd99ca9a9',
-                     'created_at': '2025-06-28T14:00:00.000001',
-                     '__class__': 'BaseModel',
-                     'updated_at': '2030-06-28T14:00:00.000001',
-                     'score': 100
-                     }
-
-        object_test = BaseModel(**dictonary)
-        out = "[{}] ({}) {}\n".format(type(object_test).__name__, object_test.id, object_test.__dict__)
-
-    def test_to_dict(self):
-        """ check dict """
-        object_test = BaseModel(score=300)
-        n_dict = object_test.to_dict()
-
-        self.assertEqual(n_dict['id'], object_test.id)
-        self.assertEqual(n_dict['score'], 300)
-        self.assertEqual(n_dict['__class__'], 'BaseModel')
-        self.assertEqual(n_dict['created_at'], object_test.created_at.isoformat())
-        self.assertEqual(n_dict['updated_at'], object_test.updated_at.isoformat())
-
-        self.assertEqual(type(n_dict['created_at']), str)
-        self.assertEqual(type(n_dict['created_at']), str)
-
-    def test_datetime(self):
-        """ check datatime """
-        bas1 = BaseModel()
-        self.assertFalse(datetime.now() == bas1.created_at)
-
-    def test_BaseModel(self):
-        """ check attributes values in a BaseModel """
-
-        self.my_model.name = "Holbie"
-        self.my_model.my_number = 100
-        self.my_model.save()
-        my_model_json = self.my_model.to_dict()
-
-        self.assertEqual(self.my_model.name, my_model_json['name'])
-        self.assertEqual(self.my_model.my_number, my_model_json['my_number'])
-        self.assertEqual('BaseModel', my_model_json['__class__'])
-        self.assertEqual(self.my_model.id, my_model_json['id'])
-
-    def test_savefirst(self):
-        """check numbers"""
-        with self.assertRaises(AttributeError):
-            BaseModel.save([455, 323232, 2323, 2323, 23332])
-
-    def test_savesecond(self):
-        """ check string """
-        with self.assertRaises(AttributeError):
-            BaseModel.save("THIS IS A TEST")
-
-    def test_inst(self):
-        """check class """
-        ml = BaseModel()
-        self.assertTrue(ml, BaseModel)
+if __name__ == "__main__":
+    unittest.main()

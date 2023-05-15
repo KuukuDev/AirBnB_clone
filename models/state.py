@@ -1,8 +1,19 @@
 #!/usr/bin/python3
-""" Class State """
-from models.base_model import BaseModel
+
+"""
+This module provides the class State
+"""
 
 
-class State(BaseModel):
-    """ State class that inherits BaseModel"""
+from models import base_model
+
+
+class State(base_model.BaseModel):
+    """
+    State class that inherits form BaseModel
+    """
+
     name = ""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

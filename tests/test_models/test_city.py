@@ -1,16 +1,20 @@
 #!/usr/bin/python3
-""" testing city """
-import unittest
-import pep8
+
+"""
+Test modules forclass City  in models.city
+"""
+from models.base_model import BaseModel
 from models.city import City
 
-class City_testing(unittest.TestCase):
-    """ check BaseModel """
 
-    def testpep8(self):
-        """ testing codestyle """
-        pepstylecode = pep8.StyleGuide(quiet=True)
-        path_user = 'models/city.py'
-        result = pepstylecode.check_files([path_user])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+class TestCity(unittest.TestCase):
+    """
+    Test case for class City
+    """
+    def initEnv(self):
+        self.city = City()
+        self.city_attr = ["state_id", "name"]
+
+    def test_has_attributes(self):
+        for items in self.city_attr:
+            self.assertIs(type(getattr(self.city, items)), str)
